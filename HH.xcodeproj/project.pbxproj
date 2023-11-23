@@ -14,6 +14,7 @@
 		B4709F892B0E3FFE00DBEADC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B4709F872B0E3FFE00DBEADC /* LaunchScreen.storyboard */; };
 		B4709F982B0E431E00DBEADC /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = B4709F972B0E431E00DBEADC /* SnapKit */; };
 		B4709F9A2B0E696400DBEADC /* View + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4709F992B0E696400DBEADC /* View + Extension.swift */; };
+		B4709F9D2B0F6E5900DBEADC /* JobList.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4709F9C2B0F6E5900DBEADC /* JobList.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -25,6 +26,7 @@
 		B4709F882B0E3FFE00DBEADC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B4709F8A2B0E3FFE00DBEADC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B4709F992B0E696400DBEADC /* View + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View + Extension.swift"; sourceTree = "<group>"; };
+		B4709F9C2B0F6E5900DBEADC /* JobList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JobList.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -94,6 +96,7 @@
 			isa = PBXGroup;
 			children = (
 				B4709F942B0E421400DBEADC /* App */,
+				B4709F9B2B0F6DAD00DBEADC /* Models */,
 				B4709F802B0E3FFC00DBEADC /* MainViewController.swift */,
 				B4709F952B0E422800DBEADC /* Extensions */,
 			);
@@ -115,6 +118,14 @@
 				B4709F992B0E696400DBEADC /* View + Extension.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		B4709F9B2B0F6DAD00DBEADC /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				B4709F9C2B0F6E5900DBEADC /* JobList.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -196,6 +207,7 @@
 				B4709F9A2B0E696400DBEADC /* View + Extension.swift in Sources */,
 				B4709F812B0E3FFC00DBEADC /* MainViewController.swift in Sources */,
 				B4709F7D2B0E3FFC00DBEADC /* AppDelegate.swift in Sources */,
+				B4709F9D2B0F6E5900DBEADC /* JobList.swift in Sources */,
 				B4709F7F2B0E3FFC00DBEADC /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
