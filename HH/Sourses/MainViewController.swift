@@ -16,9 +16,9 @@ class MainViewController: UIViewController {
 
     private lazy var tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .grouped)
-//        tableView.register(CardCell.self, forCellReuseIdentifier: CardCell.identifier)
-//        tableView.dataSource = self
-//        tableView.delegate = self
+        tableView.register(JobCell.self, forCellReuseIdentifier: JobCell.indentifier)
+        tableView.dataSource = self
+        tableView.delegate = self
         tableView.backgroundColor = .systemGray4
         tableView.translatesAutoresizingMaskIntoConstraints = false
         return tableView
