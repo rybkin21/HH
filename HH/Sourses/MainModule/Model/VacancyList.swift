@@ -1,7 +1,7 @@
 
 import Foundation
 
-struct JobList: Decodable {
+struct VacancyList: Decodable {
     var items: [Item]
     let found: Int
     let pages: Int

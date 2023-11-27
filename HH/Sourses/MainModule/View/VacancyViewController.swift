@@ -1,10 +1,18 @@
 
 import UIKit
 import SnapKit
+import Combine
 
-class MainViewController: UIViewController {
+protocol VacancyViewProtocol: AnyObject {
+    func successfulLoadingVacancy()
+}
+
+class VacancyViewController: UIViewController {
 
     // MARK: - Outlets
+
+    var presenter: VacancyPresenterProtocol!
+    private var cancellabels = Set<AnyCancellable>()
 
     private lazy var searchController: UISearchController = {
         let searchController = UISearchController(searchResultsController: nil)
@@ -16,10 +24,10 @@ class MainViewController: UIViewController {
 
     private lazy var tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .grouped)
-        tableView.register(JobCell.self, forCellReuseIdentifier: JobCell.indentifier)
+        tableView.register(VacancyCell.self, forCellReuseIdentifier: VacancyCell.indentifier)
         tableView.dataSource = self
         tableView.delegate = self
-        tableView.backgroundColor = .systemGray4
+        tableView.backgroundColor = .clear
         tableView.translatesAutoresizingMaskIntoConstraints = false
         return tableView
     }()
@@ -30,17 +38,15 @@ class MainViewController: UIViewController {
         super.viewDidLoad()
         setupHierarchy()
         setupLayout()
+        listenForSearchTextChanges()
     }
 
     // MARK: - Setup
 
     private func setupHierarchy() {
         navigationItem.searchController = searchController
-        navigationController?.navigationBar.backgroundColor = .blue
         definesPresentationContext = false
         navigationItem.hidesSearchBarWhenScrolling = false
-
-        view.backgroundColor = .systemTeal
         view.addSubviews(tableView)
     }
 
@@ -50,9 +56,24 @@ class MainViewController: UIViewController {
         }
     }
 
-    // MARK: - Actions
+    private func listenForSearchTextChanges() {
+        searchController.searchBar.searchTextField.textPublisher()
+            .debounce(for: 0.5, scheduler: DispatchQueue.main)
+            .sink { (searchText) in
+                if searchText.count >= 3 {
+                    if self.presenter.vacancyList != nil {
+                        self.presenter.vacancyList = nil
+                    }
+                    self.presenter.fetchVacancy(path: searchText, page: 0)
+                }
+            }
+            .store(in: &cancellabels)
+    }
+}
 
-    @objc private func buttonPressed() {
+extension VacancyViewController: VacancyViewProtocol {
 
+    func successfulLoadingVacancy() {
+        tableView.reloadData()
     }
 }

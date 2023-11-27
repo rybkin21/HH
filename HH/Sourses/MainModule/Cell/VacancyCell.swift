@@ -1,13 +1,13 @@
 
 import UIKit
 
-class JobCell: UITableViewCell {
+class VacancyCell: UITableViewCell {
 
-    static let indentifier = "JobCell"
+    static let indentifier = "VacancyCell"
 
     // MARK: - Outlets
 
-    private lazy var jobTitle: UILabel = {
+    private lazy var vacancyTitle: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 15, weight: .bold)
         label.numberOfLines = 2
@@ -31,11 +31,8 @@ class JobCell: UITableViewCell {
 
     private lazy var logoImage: UIImageView = {
         let logo = UIImageView()
-        logo.clipsToBounds = false
-        logo.image = UIImage(systemName: "person.crop.circle.badge.questionmark.fill")
-        logo.layer.cornerRadius = 50
-        logo.clipsToBounds = true
-        logo.contentMode = .scaleAspectFit
+        logo.layer.masksToBounds = true
+        logo.contentMode = .scaleToFill
         logo.translatesAutoresizingMaskIntoConstraints = false
         return logo
     }()
@@ -58,7 +55,7 @@ class JobCell: UITableViewCell {
 
     private lazy var labelStack: UIStackView = {
         let stack = UIStackView()
-        stack.spacing = 8
+        stack.spacing = 10
         stack.axis = .vertical
         stack.alignment = .leading
         return stack
@@ -73,31 +70,35 @@ class JobCell: UITableViewCell {
         setupLayout()
     }
 
+    override func layoutSubviews() {
+        logoImage.layer.cornerRadius = logoImage.frame.width / 2
+    }
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
     override func prepareForReuse() {
         super.prepareForReuse()
-        logoImage.image = UIImage(systemName: "person.crop.circle.badge.questionmark.fill")
+        logoImage.image = UIImage(systemName: "person.crop.circle.badge.questionmark.fill")?.withTintColor(.lightGray, renderingMode: .alwaysOriginal)
     }
 
     // MARK: - Setup
 
     private func setupHierarchy() {
         addSubviews(labelStack, logoImage)
-        labelStack.addArrangedSubviews(jobTitle,
-                                       salaryLabel,
-                                       companyName,
-                                       requirementsLabel,
-                                       responsibilitiesLabel)
+        labelStack.addArrangedSubview(vacancyTitle)
+        labelStack.addArrangedSubview(salaryLabel)
+        labelStack.addArrangedSubview(companyName)
+        labelStack.addArrangedSubview(requirementsLabel)
+        labelStack.addArrangedSubview(responsibilitiesLabel)
     }
 
     private func setupLayout() {
 
         labelStack.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(20)
-            make.trailing.equalTo(logoImage.snp.leading).inset(10)
+            make.trailing.equalTo(logoImage.snp.leading).inset(-10)
             make.centerY.equalToSuperview()
         }
 
@@ -108,10 +109,10 @@ class JobCell: UITableViewCell {
         }
     }
 
-    func setupCell(jobList: JobList?, at index: Int) {
-        guard let job = jobList?.items[index] else { return }
+    func setupCell(vacancyList: VacancyList?, at index: Int) {
+        guard let job = vacancyList?.items[index] else { return }
 
-        jobTitle.text = job.name
+        vacancyTitle.text = job.name
 
         if let fromSalary = job.salary?.from, let toSalary = job.salary?.to {
             salaryLabel.text = "от \(fromSalary) до \(toSalary) \(job.salary?.currency ?? "")"
@@ -123,8 +124,8 @@ class JobCell: UITableViewCell {
 
         companyName.text = job.employer?.name
 
-        requirementsLabel.text = job.snippet?.requirement != nil ? "Требования: \(String(describing: job.snippet!.requirement))" : ""
-        responsibilitiesLabel.text = job.snippet?.responsibility != nil ? "Обязанности: \(job.snippet!.responsibility!)" : ""
+        requirementsLabel.text = job.snippet?.requirement.map { "Требования: \($0.removingTags())" } ?? ""
+        responsibilitiesLabel.text = job.snippet?.responsibility.map { "Обязанности: \($0.removingTags())" } ?? ""
 
         guard let imagePath = job.employer?.logoUrls?.original,
               let imageUrl = URL(string: imagePath)

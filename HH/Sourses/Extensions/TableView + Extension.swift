@@ -3,22 +3,25 @@ import UIKit
 
 // MARK: - UITableVIew DataSource
 
-extension MainViewController: UITableViewDataSource {
+extension VacancyViewController: UITableViewDataSource {
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        12
+        presenter.vacancyList?.items.count ?? 0
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: JobCell.indentifier, for: indexPath) as? JobCell else { return UITableViewCell() }
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: VacancyCell.indentifier, for: indexPath) as? VacancyCell else { return UITableViewCell() }
+        let vacancyList = presenter.vacancyList
+        cell.setupCell(vacancyList: vacancyList, at: indexPath.row)
         return cell
     }
 }
 
 // MARK: - UITableView Delegate
 
-extension MainViewController: UITableViewDelegate {
+extension VacancyViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        150
+        200
     }
 
 //    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
