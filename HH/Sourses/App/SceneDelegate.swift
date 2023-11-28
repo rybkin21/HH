@@ -9,8 +9,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         window = UIWindow(windowScene: windowScene)
-        let viewController = MainViewController()
-        let navigationController = UINavigationController(rootViewController: viewController)
+        let moduleBuilder = ModuleBuilder()
+        let navigationController = UINavigationController()
+        let router = Router(navigationController: navigationController, moduleBuilder: moduleBuilder)
+        router.initialViewController()
         window?.rootViewController = navigationController
         window?.makeKeyAndVisible()
     }
