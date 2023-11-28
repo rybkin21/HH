@@ -24,6 +24,15 @@ extension VacancyViewController: UITableViewDelegate {
         200
     }
 
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        guard let vacancyList = presenter.vacancyList else { return }
+        if indexPath.row == vacancyList.items.count - 5 && vacancyList.items.count < vacancyList.pages {
+            let path = searchController.searchBar.searchTextField.text ?? ""
+            let page = (presenter.vacancyList?.page ?? 0) + 1
+            presenter.fetchVacancy(path: path, page: page)
+        }
+    }
+
 //    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 //        tableView.deselectRow(at: indexPath, animated: true)
 //        let detailVC = DetailViewController()

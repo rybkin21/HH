@@ -7,6 +7,8 @@ class VacancyCell: UITableViewCell {
 
     // MARK: - Outlets
 
+    private var standartLogo = UIImage(systemName: "person.crop.circle.badge.questionmark.fill")?.withTintColor(.lightGray, renderingMode: .alwaysOriginal)
+
     private lazy var vacancyTitle: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 15, weight: .bold)
@@ -31,8 +33,9 @@ class VacancyCell: UITableViewCell {
 
     private lazy var logoImage: UIImageView = {
         let logo = UIImageView()
-        logo.layer.masksToBounds = true
-        logo.contentMode = .scaleToFill
+        logo.contentMode = .scaleAspectFill
+        logo.image = standartLogo
+        logo.clipsToBounds = true
         logo.translatesAutoresizingMaskIntoConstraints = false
         return logo
     }()
@@ -80,7 +83,7 @@ class VacancyCell: UITableViewCell {
 
     override func prepareForReuse() {
         super.prepareForReuse()
-        logoImage.image = UIImage(systemName: "person.crop.circle.badge.questionmark.fill")?.withTintColor(.lightGray, renderingMode: .alwaysOriginal)
+        logoImage.image = standartLogo
     }
 
     // MARK: - Setup
@@ -105,7 +108,7 @@ class VacancyCell: UITableViewCell {
         logoImage.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(20)
             make.trailing.equalToSuperview().inset(15)
-            make.height.width.equalTo(100)
+            make.width.height.equalTo(100)
         }
     }
 
@@ -130,7 +133,7 @@ class VacancyCell: UITableViewCell {
         guard let imagePath = job.employer?.logoUrls?.original,
               let imageUrl = URL(string: imagePath)
         else {
-            logoImage.image = UIImage(named: "sqare-image")
+            logoImage.image = standartLogo
             return
         }
         loadImage(from: imageUrl)
@@ -146,7 +149,7 @@ class VacancyCell: UITableViewCell {
                 }
             } else {
                 DispatchQueue.main.async {
-                    self.logoImage.image = UIImage(named: "square-image")
+                    self.logoImage.image = self.standartLogo
                 }
             }
         }.resume()

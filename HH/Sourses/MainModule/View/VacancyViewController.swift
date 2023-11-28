@@ -14,11 +14,12 @@ class VacancyViewController: UIViewController {
     var presenter: VacancyPresenterProtocol!
     private var cancellabels = Set<AnyCancellable>()
 
-    private lazy var searchController: UISearchController = {
+     lazy var searchController: UISearchController = {
         let searchController = UISearchController(searchResultsController: nil)
         searchController.obscuresBackgroundDuringPresentation = false
         searchController.hidesNavigationBarDuringPresentation = false
         searchController.searchBar.placeholder = "Введите в поиск название вакансии"
+         searchController.searchBar.delegate = self
         return searchController
     }()
 
@@ -65,6 +66,8 @@ class VacancyViewController: UIViewController {
                         self.presenter.vacancyList = nil
                     }
                     self.presenter.fetchVacancy(path: searchText, page: 0)
+                } else {
+                    self.resetVacancyList()
                 }
             }
             .store(in: &cancellabels)
@@ -75,5 +78,16 @@ extension VacancyViewController: VacancyViewProtocol {
 
     func successfulLoadingVacancy() {
         tableView.reloadData()
+    }
+
+    private func resetVacancyList() {
+        presenter.vacancyList = nil
+        tableView.reloadData()
+    }
+}
+
+extension VacancyViewController: UISearchBarDelegate {
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        resetVacancyList()
     }
 }
