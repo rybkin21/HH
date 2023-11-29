@@ -27,7 +27,7 @@ class DetailedInfoViewController: UIViewController {
 
     private lazy var vacancyTitle: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 25, weight: .bold)
+        label.font = UIFont.systemFont(ofSize: 15, weight: .bold)
         label.numberOfLines = 0
         label.textColor = .black
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -36,7 +36,7 @@ class DetailedInfoViewController: UIViewController {
 
     private lazy var salaryLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 20, weight: .bold)
+        label.font = UIFont.systemFont(ofSize: 15, weight: .semibold)
         label.numberOfLines = 0
         label.textColor = .black
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -45,7 +45,7 @@ class DetailedInfoViewController: UIViewController {
 
     private lazy var descriptionLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 25, weight: .bold)
+        label.font = UIFont.systemFont(ofSize: 13, weight: .regular)
         label.numberOfLines = 0
         label.textColor = .label
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -54,7 +54,7 @@ class DetailedInfoViewController: UIViewController {
 
     private lazy var adressLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 25, weight: .bold)
+        label.font = UIFont.systemFont(ofSize: 15, weight: .bold)
         label.numberOfLines = 0
         label.textColor = .black
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -120,16 +120,18 @@ class DetailedInfoViewController: UIViewController {
 extension DetailedInfoViewController: DetailedInfoViewProtocol {
 
     func showDetailedInfo(_ detailedInfo: DetailedInfo?) {
-        vacancyTitle.text = detailedInfo?.name
-        if detailedInfo?.salary?.from != nil && detailedInfo?.salary?.to != nil {
-            salaryLabel.text = "от \(detailedInfo?.salary?.from ?? 0) до \(detailedInfo?.salary?.to ?? 0) \(detailedInfo?.salary?.currency ?? "")"
-        } else if detailedInfo?.salary?.from != nil && detailedInfo?.salary?.currency != nil {
-            salaryLabel.text = "\(detailedInfo?.salary?.from ?? 0) \(detailedInfo?.salary?.currency ?? "")"
-        } else {
-            salaryLabel.text = "Заработная плата не указана"
+        DispatchQueue.main.async { [weak self] in
+            self?.vacancyTitle.text = detailedInfo?.name
+            if detailedInfo?.salary?.from != nil && detailedInfo?.salary?.to != nil {
+                self?.salaryLabel.text = "от \(detailedInfo?.salary?.from ?? 0) до \(detailedInfo?.salary?.to ?? 0) \(detailedInfo?.salary?.currency ?? "")"
+            } else if detailedInfo?.salary?.from != nil && detailedInfo?.salary?.currency != nil {
+                self?.salaryLabel.text = "\(detailedInfo?.salary?.from ?? 0) \(detailedInfo?.salary?.currency ?? "")"
+            } else {
+                self?.salaryLabel.text = "Заработная плата не указана"
+            }
+            self?.descriptionLabel.text = detailedInfo?.description
+            self?.descriptionLabel.attributedText = detailedInfo?.description?.attributedStringFromHTML
+            self?.adressLabel.text = detailedInfo?.area?.name
         }
-        descriptionLabel.text = detailedInfo?.description
-        descriptionLabel.attributedText = detailedInfo?.description?.attributedStringFromHTML
-        adressLabel.text = detailedInfo?.area?.name
     }
 }

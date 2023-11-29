@@ -34,7 +34,7 @@ class Router: RouterProtocol {
             guard let detailedInfoViewController = moduleBuilder?.createDetailedInfo(with: vacancyId, router: self) else {
                 return
             }
-            navigationController.pushViewController(detailedInfoViewController, animated: true)
+            navigationController.present(detailedInfoViewController, animated: true)
         }
     }
 

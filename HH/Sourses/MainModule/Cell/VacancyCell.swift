@@ -13,12 +13,15 @@ class VacancyCell: UITableViewCell {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 15, weight: .bold)
         label.numberOfLines = 2
+        label.textColor = .black
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
 
     private lazy var salaryLabel: UILabel = {
         let label = UILabel()
+        label.textColor = .black
+        label.font = UIFont.systemFont(ofSize: 15, weight: .medium)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -27,6 +30,8 @@ class VacancyCell: UITableViewCell {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 15, weight: .semibold)
         label.numberOfLines = 2
+        label.textColor = .black
+
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -34,7 +39,9 @@ class VacancyCell: UITableViewCell {
     private lazy var requirementsLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 2
-        label.font = UIFont.systemFont(ofSize: 13, weight: .light)
+        label.font = UIFont.systemFont(ofSize: 13, weight: .regular)
+        label.textColor = .black
+
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -42,7 +49,9 @@ class VacancyCell: UITableViewCell {
     private lazy var responsibilitiesLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 2
-        label.font = UIFont.systemFont(ofSize: 13, weight: .light)
+        label.font = UIFont.systemFont(ofSize: 13, weight: .regular)
+        label.textColor = .black
+
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
