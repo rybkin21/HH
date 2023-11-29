@@ -28,9 +28,8 @@ protocol NetworkServiceProtocol: AnyObject {
                                requestType: RequestType,
                                completion: @escaping(Result<T?, Error>) -> Void)
 
-    func requestDataTask<T: Decodable>(
-        urlRequest: URLRequest,
-        completion: @escaping(Result<T?, Error>) -> Void)
+    func requestDataTask<T: Decodable>(urlRequest: URLRequest,
+                                       completion: @escaping(Result<T?, Error>) -> Void)
 }
 
 // MARK: - NetworkService
@@ -60,19 +59,33 @@ class NetworkService: NetworkServiceProtocol {
             return
         }
 
-        var queryItems: [URLQueryItem] = urlElements.queryItems ?? []
-        let vacancyQueryItems: [URLQueryItem] = [
-            URLQueryItem(name: "text", value: path),
-            URLQueryItem(name: "page", value: String(page ?? 0)),
-            URLQueryItem(name: "per_page", value: "20")
-        ]
-        vacancyQueryItems.forEach { queryItem in
-            queryItems.append(queryItem)
+        switch requestType {
+        case .vacancyList:
+            var queryItems: [URLQueryItem] = urlElements.queryItems ?? []
+            let vacancyQueryItems: [URLQueryItem] = [
+                URLQueryItem(name: "text", value: path),
+                URLQueryItem(name: "page", value: String(page ?? 0)),
+                URLQueryItem(name: "per_page", value: "20")
+            ]
+            vacancyQueryItems.forEach { queryItem in
+                queryItems.append(queryItem)
+            }
+            urlElements.queryItems = queryItems
+            var urlRequest = URLRequest(url: (urlElements.url)!)
+            urlRequest.httpMethod = method.rawValue
+            requestDataTask(urlRequest: urlRequest, completion: completion)
+
+        case .detailedVacancy:
+            let stringUrl = mainStringUrl + "/" + path
+            guard let url = URL(string: stringUrl) else {
+                completion(.failure(CustomError(message: "wrong URL")))
+                return
+            }
+            var urlReqest = URLRequest(url: url)
+            urlReqest.httpMethod = method.rawValue
+            requestDataTask(urlRequest: urlReqest, completion: completion)
         }
-        urlElements.queryItems = queryItems
-        var urlRequest = URLRequest(url: (urlElements.url)!)
-        urlRequest.httpMethod = method.rawValue
-        requestDataTask(urlRequest: urlRequest, completion: completion)
+
     }
 
     func requestDataTask<T: Decodable>(urlRequest: URLRequest,
