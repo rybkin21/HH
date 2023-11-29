@@ -17,7 +17,10 @@ class VacancyPresenter: VacancyPresenterProtocol {
     }
 
     func fetchVacancy(path: String, page: Int) {
-        networkService.getVacancies(path: path, page: page, method: .get, requestType: .vacancyList) { [weak self] (result: Result<VacancyList?, Error>) in
+        networkService.getVacancies(path: path,
+                                    page: page,
+                                    method: .get,
+                                    requestType: .vacancyList) { [weak self] (result: Result<VacancyList?, Error>) in
             guard let strongSelf = self else { return }
             DispatchQueue.main.async {
                 switch result {
@@ -39,7 +42,7 @@ class VacancyPresenter: VacancyPresenterProtocol {
         }
     }
 
-    func didSelectVacancy(with id: String) {
-    
+    func didSelectVacancy(with vacancyId: String) {
+        router?.showDetailedInfo(with: vacancyId)
     }
 }

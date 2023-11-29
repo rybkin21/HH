@@ -14,17 +14,18 @@ class VacancyViewController: UIViewController {
     var presenter: VacancyPresenterProtocol!
     private var cancellabels = Set<AnyCancellable>()
 
-     lazy var searchController: UISearchController = {
+    lazy var searchController: UISearchController = {
         let searchController = UISearchController(searchResultsController: nil)
         searchController.obscuresBackgroundDuringPresentation = false
         searchController.hidesNavigationBarDuringPresentation = false
         searchController.searchBar.placeholder = "Введите в поиск название вакансии"
-         searchController.searchBar.delegate = self
+        searchController.searchBar.searchBarStyle = UISearchBar.Style.prominent
+        searchController.searchBar.delegate = self
         return searchController
     }()
 
     private lazy var tableView: UITableView = {
-        let tableView = UITableView(frame: .zero, style: .grouped)
+        let tableView = UITableView()
         tableView.register(VacancyCell.self, forCellReuseIdentifier: VacancyCell.indentifier)
         tableView.dataSource = self
         tableView.delegate = self
@@ -45,6 +46,8 @@ class VacancyViewController: UIViewController {
     // MARK: - Setup
 
     private func setupHierarchy() {
+        let gradientLayer = CAGradientLayer.magicCardGameBackgroundGradient()
+        view.layer.insertSublayer(gradientLayer, at: 0)
         navigationItem.searchController = searchController
         definesPresentationContext = false
         navigationItem.hidesSearchBarWhenScrolling = false
@@ -53,7 +56,7 @@ class VacancyViewController: UIViewController {
 
     private func setupLayout() {
         tableView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+            make.top.bottom.leading.trailing.equalToSuperview()
         }
     }
 
